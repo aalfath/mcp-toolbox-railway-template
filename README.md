@@ -47,7 +47,7 @@ Whoever holds the token can run any SQL the configured database role allows (the
 
 ## Resources
 
-Runs in about 45 MB of RAM (measured on Railway with a 0.5 GB limit); Railway's Free plan (0.5 GB per service) is plenty. The Go runtime is capped with `GOMEMLIMIT=300MiB`. If Toolbox or the gate stops unexpectedly, the container exits non-zero so Railway restarts it.
+Measured on Railway with a 0.5 GB / 1 vCPU limit: about 45 MB of RAM idle, and about 240 MB at peak while returning a 200,000-row result (about 16 MB of JSON) through `execute_sql`, so Railway's Free plan (0.5 GB per service) is enough. Very large result sets need more: add `LIMIT` to queries or give the service more memory. The Go runtime is capped with `GOMEMLIMIT=300MiB`. If Toolbox or the gate stops unexpectedly, the container exits non-zero so Railway restarts it.
 
 ## Updates
 
