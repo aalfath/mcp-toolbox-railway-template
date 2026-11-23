@@ -1,3 +1,5 @@
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template/mcp-toolbox-for-da-1?utm_medium=integration&utm_source=button&utm_campaign=mcp-toolbox)
+
 # MCP Toolbox for Databases on Railway
 
 Railway template for [MCP Toolbox for Databases](https://github.com/googleapis/mcp-toolbox) (`googleapis/mcp-toolbox`, Apache-2.0), Google's open-source MCP server that gives AI agents ready-made, configurable tools over PostgreSQL, MySQL, SQL Server, SQLite, BigQuery, Spanner and many other databases.
@@ -15,7 +17,7 @@ Toolbox itself keeps no state, so it has no volume; your data lives in PostgreSQ
 
 | Variable | Default | What it is |
 |---|---|---|
-| `MCP_AUTH_TOKEN` | `${{secret(48)}}` | Generated bearer token. MCP clients send `Authorization: Bearer <token>`. |
+| `MCP_AUTH_TOKEN` | `${{secret(48)}}` | Generated bearer token (letters and digits, 48 characters). MCP clients send `Authorization: Bearer <token>`. If you set your own, use at least 24 characters from `A-Z a-z 0-9 . _ ~ -`; the service refuses to start without one. |
 | `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_DATABASE`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | references to the Postgres service | The database Toolbox serves. Point them at any other PostgreSQL to serve that one instead (use a least-privilege role for real data). |
 | `PORT` | `8080` | Public port of the gate. |
 
@@ -45,7 +47,7 @@ Whoever holds the token can run any SQL the configured database role allows (the
 
 ## Resources
 
-Runs in about 60 MB of RAM; Railway's Free plan (0.5 GB per service) is plenty. The Go runtime is capped with `GOMEMLIMIT=300MiB`. If Toolbox or the gate stops unexpectedly, the container exits non-zero so Railway restarts it.
+Runs in about 45 MB of RAM (measured on Railway with a 0.5 GB limit); Railway's Free plan (0.5 GB per service) is plenty. The Go runtime is capped with `GOMEMLIMIT=300MiB`. If Toolbox or the gate stops unexpectedly, the container exits non-zero so Railway restarts it.
 
 ## Updates
 
