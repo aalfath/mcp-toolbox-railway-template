@@ -1,0 +1,29 @@
+{
+	admin off
+	auto_https off
+	persist_config off
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+:{$PORT} {
+	# Open health check for Railway (proxied to Toolbox's own /healthz).
+	handle /healthz {
+		request_header -Authorization
+		reverse_proxy 127.0.0.1:{$TOOLBOX_INTERNAL_PORT}
+	}
+
+	@authorized header Authorization "Bearer {$MCP_AUTH_TOKEN}"
+	handle @authorized {
+		reverse_proxy 127.0.0.1:{$TOOLBOX_INTERNAL_PORT} {
+			header_up -Authorization
+			flush_interval -1
+		}
+	}
+
+	handle {
+		header WWW-Authenticate "Bearer realm=\"mcp-toolbox\""
+		respond "Unauthorized: send Authorization: Bearer <MCP_AUTH_TOKEN>" 401
+	}
+}
